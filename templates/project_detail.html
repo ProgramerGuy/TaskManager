@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Detalle proyecto</h1>
+	<ul>
+		{% for task in tasks %}
+			<li>
+				<h4>{{ task.name }}</h4> 
+				<div>
+					{{ task.description | safe}}
+				</div>
+			</li>
+		{% endfor%}
+	</ul>
+
+	<div style="float: right">
+		<a href="{% url 'Project:create_task' pk=project %}">Nuevo</a>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Projects</h1>
+	<ul>
+		{% for item in Projects %}
+			<li>
+				<a href="{% url 'Project:project_detail' pk=item.pk %}">{{ item.name }}</a>: {{ item.description }}
+				<ul>
+				{% for i in item.project_users.all %}
+					<li>
+						{{ i.user.username }}
+					</li>
+				{% endfor %}
+				</ul>
+			</li>
+		{% endfor %}
+	</ul>
+	<div style="float: right">
+		<a href="{% url 'Project:create_project' %}">Nuevo</a>
+	</div>
+	<div style="float: left">
+		<a href="{% url 'Project:logout' %}">Logout</a>
+	</div>
+{% endblock %}
