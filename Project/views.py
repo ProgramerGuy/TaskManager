@@ -51,28 +51,28 @@ def login(request):
 	_message = 'Please sign in'
 	_username = ""
 	_password = ""
+	context = {}
 
 	if request.user.is_authenticated():
 		return HttpResponseRedirect(reverse('Project:projects'))
-
 	if request.method == 'POST':
 		_username = request.POST.get("username", "")
 		_password = request.POST.get("password", "")
-        user = authenticate(username=_username, password=_password)
-        if user is not None:
-            if user.is_active:
-                auth_login(request, user)
-                return HttpResponseRedirect(reverse('Project:projects'))
-            else:
-                _message = 'Your account is not activated'
-        else:
-            _message = 'Login Invalido, Intente de nuevo.'
-    	context = {'message': _message}
+		user = authenticate(username=_username, password=_password )
+		if user is not None:
+			if user.is_active:
+			    auth_login(request, user)
+			    return HttpResponseRedirect(reverse('Project:projects'))
+			else:
+			    _message = 'Your account is not activated'
+		else:
+		    _message = 'Login Invalido, Intente de nuevo.'
+		context = {'message': _message}
 	return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/login/')
 def create_project(request):
-	profile = Profile.objects.get(user=request.user)
+	profile = get_object_or_404(Profile, user=request.user)
 	form = ProjectForm()
 	if request.method == 'POST':
 		data = request.POST
